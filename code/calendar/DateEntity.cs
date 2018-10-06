@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,37 @@ namespace calendar
             var diff = (7 + (Date.DayOfWeek - DayOfWeek.Monday)) % 7;
             var week = Date.AddDays(-1 * diff).Date;
             return week.ToString("d", Culture);
+        }
+
+        public string ToSql()
+        {
+            return string.Format(Culture, "INSERT INTO Calendar (Id, Date, DayOfYear, DayName, WeekOfYear, WeekName, Month, MonthName, Year) VALUES ({0});",
+                string.Join(",", GetValues().Select(i => ToSql(i))));
+        }
+
+        public static string ToCsvHeader()
+        {
+            return ToCsvHeader(CultureInfo.CurrentCulture);
+        }
+
+        public static string ToCsvHeader(CultureInfo cul)
+        {
+            return string.Format(cul, "Id{0}Date{0}DayOfYear{0}DayName{0}WeekOfYear{0}WeekName{0}Month{0}MonthName{0}Year", cul.TextInfo.ListSeparator);
+        }
+
+        public string ToCsvValue()
+        {
+            return string.Join(Culture.TextInfo.ListSeparator, GetValues());
+        }
+
+        private object[] GetValues()
+        {
+            return new object[] { Id, Date, DayOfYear, DayName, WeekOfYear, WeekName, Month, MonthName, Year };
+        }
+
+        private string ToSql(object o)
+        {
+            return o.GetType().IsValueType ? Convert.ToString(o, Culture) : string.Format(Culture, "'{0}'", o);
         }
     }
 }

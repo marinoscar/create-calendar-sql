@@ -12,14 +12,37 @@ namespace calendar
         {
             var res = new List<DateEntity>();
             var startDate = new DateTime(startYear, 1, 1);
-            var endDate = new DateTime(startYear + yearCount, 12, 31);
+            var endDate = startDate.AddYears(yearCount);
             var d = startDate;
-            while(d < endDate)
+            var id = 1;
+            while (d < endDate)
             {
-                res.Add(new DateEntity(d));
+                res.Add(new DateEntity(d) { Id = id });
                 d.AddDays(1);
+                id++;
             }
             return res;
+        }
+
+        public static string GetSqlScript(short startYear, int yearCount)
+        {
+            var sb = new StringBuilder();
+            foreach (var i in GetDates(startYear, yearCount))
+            {
+                sb.AppendLine(i.ToSql());
+            }
+            return sb.ToString();
+        }
+
+        public static string GetCsv(short startYear, int yearCount)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(DateEntity.ToCsvHeader());
+            foreach (var i in GetDates(startYear, yearCount))
+            {
+                sb.AppendLine(i.ToCsvValue());
+            }
+            return sb.ToString();
         }
     }
 }
