@@ -22,6 +22,7 @@ Use the following commands
 /years      {num}  Count of years to increase, for example 2
 /format     {text} csv or sql
 /output     {text} the location of the file to store the values
+/local      {text} the locale to use i.e en-US or es-ES
 ";
         }
 
@@ -55,6 +56,11 @@ Use the following commands
         public string Output
         {
             get { return GetArg("/output").Trim(); }
+        }
+
+        public string Locale
+        {
+            get { return GetArg("/locale").Trim(); }
         }
 
         private short ToNum(string val)

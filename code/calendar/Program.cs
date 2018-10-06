@@ -20,12 +20,15 @@ namespace calendar
             try
             {
                 CheckFormat(options.Format);
-                if (options.Format == "csv") SaveToFile(() => DateHelper.GetCsv(options.Start, options.Years), options.Output);
-                else SaveToFile(() => DateHelper.GetSqlScript(options.Start, options.Years), options.Output);
+                if (options.Format == "csv") SaveToFile(() => DateHelper.GetCsv(options.Locale, options.Start, options.Years), options.Output);
+                else SaveToFile(() => DateHelper.GetSqlScript(options.Locale, options.Start, options.Years), options.Output);
+                Console.WriteLine();
+                Console.WriteLine("File created");
+                Console.WriteLine();
             }
-            catch (ArgumentException argEx)
+            catch (Exception ex)
             {
-                Console.WriteLine(argEx.Message);
+                Console.WriteLine(ex.Message);
                 Console.WriteLine();
                 Console.WriteLine(ArgsHelper.ShowHelp());
             }

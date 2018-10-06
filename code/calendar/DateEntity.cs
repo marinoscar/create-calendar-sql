@@ -31,10 +31,12 @@ namespace calendar
         public DateTime Date { get; set; }
         public short DayOfYear { get; set; }
         public string DayName { get; set; }
+        public string DayShort { get; set; }
         public short WeekOfYear { get; set; }
         public string WeekName { get; set; }
         public short Month { get; set; }
         public string MonthName { get; set; }
+        public string MonthShort { get; set; }
         public short Year { get; set; }
 
         private void Init(DateTime date)
@@ -42,11 +44,13 @@ namespace calendar
             var cal = Culture.Calendar;
             Date = date.Date;
             DayName = Date.ToString("dddd", Culture);
+            DayShort = Date.ToString("d", Culture);
             DayOfYear = Convert.ToInt16(date.DayOfYear);
             WeekOfYear = Convert.ToInt16(Culture.Calendar.GetWeekOfYear(Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday));
             WeekName = GetWeekName();
             Month = Convert.ToInt16(date.Month);
-            MonthName = Date.ToString("mmmm", Culture);
+            MonthName = Date.ToString("MMMM", Culture);
+            MonthShort = date.ToString("MMM, yy");
             Year = Convert.ToInt16(date.Year);
         }
 
@@ -59,7 +63,7 @@ namespace calendar
 
         public string ToSql()
         {
-            return string.Format(Culture, "INSERT INTO Calendar (Id, Date, DayOfYear, DayName, WeekOfYear, WeekName, Month, MonthName, Year) VALUES ({0});",
+            return string.Format(Culture, "INSERT INTO Calendar (Id, Date, DayOfYear, DayName, DayShort, WeekOfYear, WeekName, Month, MonthName, MonthShort, Year) VALUES ({0});",
                 string.Join(",", GetValues().Select(i => ToSql(i))));
         }
 
@@ -70,7 +74,7 @@ namespace calendar
 
         public static string ToCsvHeader(CultureInfo cul)
         {
-            return string.Format(cul, "Id{0}Date{0}DayOfYear{0}DayName{0}WeekOfYear{0}WeekName{0}Month{0}MonthName{0}Year", cul.TextInfo.ListSeparator);
+            return string.Format(cul, "Id{0}Date{0}DayOfYear{0}DayName{0}DayShort{0}WeekOfYear{0}WeekName{0}Month{0}MonthName{0}MonthShort{0}Year", cul.TextInfo.ListSeparator);
         }
 
         public string ToCsvValue()
@@ -80,7 +84,7 @@ namespace calendar
 
         private object[] GetValues()
         {
-            return new object[] { Id, Date, DayOfYear, DayName, WeekOfYear, WeekName, Month, MonthName, Year };
+            return new object[] { Id, Date, DayOfYear, DayName, DayShort, WeekOfYear, WeekName, Month, MonthName, MonthShort, Year };
         }
 
         private string ToSql(object o)
