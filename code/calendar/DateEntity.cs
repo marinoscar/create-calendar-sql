@@ -28,7 +28,7 @@ namespace calendar
 
         public CultureInfo Culture { get; set; }
         public int Id { get; set; }
-        public DateTime Date { get; set }
+        public DateTime Date { get; set; }
         public short DayOfYear { get; set; }
         public string DayName { get; set; }
         public short WeekOfYear { get; set; }
