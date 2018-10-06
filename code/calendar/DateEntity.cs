@@ -50,7 +50,7 @@ namespace calendar
             WeekName = GetWeekName();
             Month = Convert.ToInt16(date.Month);
             MonthName = Date.ToString("MMMM", Culture);
-            MonthShort = date.ToString("MMM, yy");
+            MonthShort = date.ToString("MMM, yy", Culture);
             Year = Convert.ToInt16(date.Year);
         }
 
