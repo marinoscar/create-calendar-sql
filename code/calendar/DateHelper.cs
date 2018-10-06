@@ -18,7 +18,7 @@ namespace calendar
             while (d < endDate)
             {
                 res.Add(new DateEntity(d) { Id = id });
-                d.AddDays(1);
+                d = d.AddDays(1);
                 id++;
             }
             return res;

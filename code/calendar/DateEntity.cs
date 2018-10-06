@@ -85,7 +85,7 @@ namespace calendar
 
         private string ToSql(object o)
         {
-            return o.GetType().IsValueType ? Convert.ToString(o, Culture) : string.Format(Culture, "'{0}'", o);
+            return typeof(DateTime) == o.GetType() || typeof(string) == o.GetType() ? string.Format(Culture, "'{0}'", o) : Convert.ToString(o, Culture);
         }
     }
 }
